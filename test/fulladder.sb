@@ -1,0 +1,16 @@
+i  i // inputs a, b
+:  :
+| x |
+:: &
+|&||
+|:|| i // input c
+& &| :
+ &  x| // a xor b, c, a nand b, c
+ : |||
+| x x
+: :& |
+|&| &
+|:| |
+& & |
+ &  |
+ o  o
