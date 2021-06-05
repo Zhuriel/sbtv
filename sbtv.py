@@ -1,16 +1,24 @@
 #!/usr/bin/env python3
 import argh
 
+import compile
+
 mem_list = []
 
+
+@argh.arg("filename", help="The path to the input file")
+@argh.arg("--debug", help="Prints additional debug information")
+@argh.arg("inputs", help="Space separated bit vector inputs")
 def sim(filename, debug=False, *inputs):
+    "Simulate the specified file with the given inputs"
     with open(filename, 'r') as file:
         program = file.readlines()
-        input_words = [[bool(int(in_bit)) for in_bit in inword] for inword in inputs]
-        outputs = []
-        for input in input_words:
-            outputs.append(run_cycle(program, input, debug))
-        print(" ".join(["".join([str(int(o)) for o in output]) for output in outputs]))
+    input_words = [[bool(int(in_bit)) for in_bit in inword] for inword in inputs]
+    outputs = []
+    for input in input_words:
+        outputs.append(run_cycle(program, input, debug))
+    print(" ".join(["".join([str(int(o)) for o in output]) for output in outputs]))
+
 
 def run_cycle(program, input, debug):
     global mem_list
@@ -19,7 +27,7 @@ def run_cycle(program, input, debug):
     for line_id, line in enumerate(program):
         if debug:
             print(f"line {line_id}:")
-            print(line_inputs)
+            print("".join([str(int(i)) for i in line_inputs]))
         line_outputs = []
         for char in line:
             if char == 'i':
@@ -72,4 +80,5 @@ def run_cycle(program, input, debug):
         line_inputs = line_outputs
     return outputs
 
-argh.dispatch_command(sim)
+
+argh.dispatch_commands([sim, compile.compile])

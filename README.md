@@ -5,9 +5,7 @@ It is intended to be a hardware description language (HDL) analog to esoteric la
 
 An SBTV program describes a single hardware cycle. Input is read as an arbitrarily long string of individual bits, and transformed by successive lines.
 Each line must accept the exact number of operands that the previous line generates.
-The output of the final line is the output of the circuit, and must not contain any multi-bit values.
-
-Currently, only simulation is supported. Translation to more useful HDLs for hardware synthesis may be added in the future if I get bored enough at some point.
+Output is generated according to the out commands in the code and must not contain any multi-bit values.
 
 ## Language Specification
 
@@ -53,10 +51,12 @@ There is a memory list which can be used both for implementing registers and for
 
 ## Usage
 
+### Simulation
+
 The interpreter can be called using
 
 ```
-./sbtv.py <program file> <inputs>
+./sbtv.py sim <program file> <inputs>
 ```
 
 Where program file is the path to the program file and inputs is a space separated list of input vectors. For example the command
@@ -69,6 +69,14 @@ Will print the corresponding outputs, i.e.:
 
 ```
 0 1 1 0
+```
+
+### VHDL generation
+
+To compile a file to VHDL, simply use
+
+```
+./sbtv.py compile <program file>
 ```
 
 ## Examples
